@@ -10,6 +10,22 @@
   }
 
   .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+
+      span {
+        &:first-child {
+          font-weight: bold;
+        }
+      }
+    }
     button {
       font-family: sans-serif;
       font-weight: 600;
@@ -22,6 +38,7 @@
       &:hover,
       &:visited {
         background: #0066a6;
+        color: #fff;
       }
     }
 

@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { ReactReduxContext } from "react-redux";
 import "./FavoriteList.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 const FavoriteList = () => {
   const { store } = useContext(ReactReduxContext);
@@ -12,13 +12,11 @@ const FavoriteList = () => {
 
   useEffect(() => {
     const favorite = localStorage.getItem("favorite")
-      ? JSON.parse(localStorage.getItem("favorite"))
+      ? JSON.parse(localStorage.getItem("favorite")).reverse()
       : [];
 
     setFavoriteList([...favorite] || store.getState().favorite.favorite);
   }, [store]);
-
-  console.log("fav-->", favoriteList);
 
   return (
     <div className="list-container">
@@ -29,12 +27,11 @@ const FavoriteList = () => {
               <h4>Favorite Albums</h4>
               {favoriteList?.length > 0 ? (
                 <div className="content-inner-wrapper">
-                  {favoriteList.map((item) => (
-                    <div className="main-content">
+                  {favoriteList.map((item, index) => (
+                    <div className="main-content" key={index}>
                       <div className="img-section">
                         <img
                           src={item.thumbnailUrl}
-                          key={item.id}
                           alt="Album"
                         ></img>
                       </div>
@@ -49,7 +46,7 @@ const FavoriteList = () => {
                           </div>
                         </div>
                         <div className="icon-container">
-                          <FontAwesomeIcon icon={faHeart} />
+                          <FontAwesomeIcon icon={faStar} />
                         </div>
                       </div>
                     </div>

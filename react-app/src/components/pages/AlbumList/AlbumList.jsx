@@ -3,6 +3,7 @@ import AlbumCard from "../../AlbumCard/AlbumCard";
 import "./AlbumList.scss";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 
 const AlbumList = () => {
   const [albumData, setAlbumData] = useState([]);
@@ -18,7 +19,7 @@ const AlbumList = () => {
         `https://jsonplaceholder.typicode.com/albums/1/photos?_page=${currentPage}&_limit=10`
       );
       const data = await response.json();
-      setAlbumData((prevItems) => [...prevItems, ...data]);
+      setAlbumData([...albumData, ...data]);
       setCurrentPage(currentPage + 1);
     } catch (error) {
       console.log(error);
@@ -33,15 +34,25 @@ const AlbumList = () => {
       </div>
 
       <div className="album-list">
-        <InfiniteScroll
-          dataLength={albumData.length}
-          next={fetchData}
-          hasMore={true}
-        >
-          {albumData.map((list, index) => (
-            <AlbumCard albumlist={list} key={index}></AlbumCard>
-          ))}
-        </InfiniteScroll>
+        <Card>
+          <InfiniteScroll
+            dataLength={albumData.length}
+            next={fetchData}
+            hasMore={true}
+            height={550}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
+            useWindow={false}
+          >
+            {albumData &&
+              albumData.map((item, index) => (
+                <AlbumCard albumlist={item} key={index} />
+              ))}
+          </InfiniteScroll>
+        </Card>
       </div>
     </div>
   );

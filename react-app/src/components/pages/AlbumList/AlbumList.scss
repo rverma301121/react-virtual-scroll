@@ -7,7 +7,7 @@
     justify-content: center;
     max-width: 70rem;
     margin: 0 auto;
-    padding: 2rem 4rem;
+    padding: 2rem;
 
     .heading {
       text-align: center;
@@ -41,6 +41,15 @@
   }
 
   .album-list {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .infinite-scroll-component__outerdiv {
+      padding: 2rem;
+      background-color: #efeef2;
+    }
+
     .loading {
       text-align: center;
     }
