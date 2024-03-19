@@ -1,22 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { ReactReduxContext } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./FavoriteList.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
+import {
+  getFavorite,
+  removeFavorite,
+} from "../../redux/actions/favoriteActions";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const FavoriteList = () => {
-  const { store } = useContext(ReactReduxContext);
+  const dispatch = useDispatch();
 
   const [favoriteList, setFavoriteList] = useState([]);
 
   useEffect(() => {
-    const favorite = localStorage.getItem("favorite")
-      ? JSON.parse(localStorage.getItem("favorite")).reverse()
-      : [];
+    getFavoriteList();
+  }, []);
 
-    setFavoriteList([...favorite] || store.getState().favorite.favorite);
-  }, [store]);
+  const getFavoriteList = () => {
+    dispatch(getFavorite()).then((res) => {
+      setFavoriteList([...res]);
+    });
+  };
+
+  const handleDelete = (album) => {
+    dispatch(removeFavorite(album));
+    getFavoriteList();
+  };
 
   return (
     <div className="list-container">
@@ -30,10 +41,7 @@ const FavoriteList = () => {
                   {favoriteList.map((item, index) => (
                     <div className="main-content" key={index}>
                       <div className="img-section">
-                        <img
-                          src={item.thumbnailUrl}
-                          alt="Album"
-                        ></img>
+                        <img src={item.thumbnailUrl} alt="Album"></img>
                       </div>
                       <div className="content">
                         <div className="title-section">
@@ -46,7 +54,10 @@ const FavoriteList = () => {
                           </div>
                         </div>
                         <div className="icon-container">
-                          <FontAwesomeIcon icon={faStar} />
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() => handleDelete(item)}
+                          />
                         </div>
                       </div>
                     </div>

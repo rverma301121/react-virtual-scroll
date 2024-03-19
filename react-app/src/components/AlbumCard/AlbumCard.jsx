@@ -1,26 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "./AlbumCard.scss";
-import { ReactReduxContext, useDispatch } from "react-redux";
-import { addToFavorite } from "../../redux/actions/favoriteActions";
+import { useDispatch } from "react-redux";
+import {
+  addToFavorite,
+  getFavorite,
+} from "../../redux/actions/favoriteActions";
 
 const AlbumCard = ({ albumlist }) => {
   const dispatch = useDispatch();
 
-  const { store } = useContext(ReactReduxContext);
   const [active, setActive] = useState();
 
   useEffect(() => {
-    if (store.getState().favorite.favorite.length) {
-      const favorite = store.getState().favorite.favorite;
-      favorite.forEach((item) => {
-        if (item.id === albumlist.id) {
-          setActive(item.id);
-        }
-      });
-    }
-  }, [albumlist.id]);
+    dispatch(getFavorite()).then((favorite) => {
+      if (favorite) {
+        favorite.forEach((item) => {
+          if (item.id === albumlist.id) {
+            setActive(item.id);
+          }
+        });
+      }
+    });
+  }, []);
 
   const handleFavorite = (event) => {
     dispatch(addToFavorite(albumlist));
