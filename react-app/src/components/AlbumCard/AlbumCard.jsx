@@ -46,7 +46,9 @@ const AlbumCard = ({ albumlist }) => {
           variant="primary"
           onClick={handleFavorite}
         >
-          Add to Favorite
+          {
+            Number(active) === albumlist.id ? "Added" : "Add to Favorite"
+          }
         </Button>
       </Card.Body>
     </Card>
